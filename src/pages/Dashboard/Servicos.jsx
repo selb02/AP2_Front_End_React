@@ -1,245 +1,314 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './Servicos.css';
 
 function Servicos() {
-  // Banco de dados inicial com 5 produtos
-  const [produtos, setProdutos] = useState([
-    {
-      id: 1,
-      nome: 'Notebook Gamer Avançado',
-      preco: 4599.99,
-      descricao1: 'Processador Intel Core i7 de 11ª geração',
-      descricao2: '16GB RAM DDR4, SSD NVMe 512GB',
-      descricao3: 'Placa de vídeo NVIDIA RTX 3060 6GB',
-      categoria: 'eletronicos'
-    },
-    {
-      id: 2,
-      nome: 'Smartphone Flagship',
-      preco: 3299.00,
-      descricao1: 'Tela AMOLED 6.7" 120Hz',
-      descricao2: 'Câmera tripla 108MP + ultra-wide + telephoto',
-      descricao3: 'Bateria 5000mAh com carregamento rápido 65W',
-      categoria: 'eletronicos'
-    },
-    {
-      id: 3,
-      nome: 'Cadeira Ergonômica Premium',
-      preco: 1299.90,
-      descricao1: 'Design ergonômico com apoio lombar ajustável',
-      descricao2: 'Estofamento em mesh respirável',
-      descricao3: 'Base em alumínio com rodízios de 360 graus',
-      categoria: 'moveis'
-    },
-    {
-      id: 4,
-      nome: 'Tablet Profissional',
-      preco: 2899.50,
-      descricao1: 'Tela 11" Liquid Retina com True Tone',
-      descricao2: 'Chip A14 Bionic com Neural Engine',
-      descricao3: 'Compatível com Apple Pencil 2ª geração',
-      categoria: 'informatica'
-    },
-    {
-      id: 5,
-      nome: 'Fone Bluetooth Noise Cancelling',
-      preco: 899.99,
-      descricao1: 'Cancelamento ativo de ruído (ANC)',
-      descricao2: 'Bateria com até 30 horas de duração',
-      descricao3: 'Som surround com drivers de 40mm',
-      categoria: 'eletronicos'
-    }
-  ]);
+  // Estado para armazenar apartamentos
+  const [apartamentos, setApartamentos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-
-  const [produtoForm, setProdutoForm] = useState({
-    nome: '',
-    preco: '',
-    descricao1: '',
-    descricao2: '', 
-    descricao3: '',
-    categoria: ''
+  // Estado do formulário de apartamento
+  const [apartamentoForm, setApartamentoForm] = useState({
+    Numero_AP: '',
+    Ocupado: false,
+    Alugado: false,
+    Venda: false
   });
 
+  // URL base da sua API (ajuste conforme necessário)
+  const API_BASE_URL = 'https://frameworks-sistemadetransportadora.onrender.com/api'; // Ajuste para sua URL
 
-  /*
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (produtoForm.nome && produtoForm.preco) {
-      const novoProduto = {
-        id: Date.now(),
-        ...produtoForm,
-        preco: parseFloat(produtoForm.preco)
-      };
-      setProdutos([...produtos, novoProduto]);
-      setProdutoForm({
-        nome: '',
-        preco: '',
-        descricao1: '',
-        descricao2: '',
-        descricao3: '',
-        categoria: ''
-      });
+  // Função para carregar apartamentos
+  const carregarApartamentos = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const response = await fetch(`${API_BASE_URL}/apartamentos/apartamento`);
+      if (!response.ok) {
+        throw new Error('Erro ao carregar apartamentos');
+      }
+      const data = await response.json();
+      setApartamentos(data);
+    } catch (err) {
+      setError('Erro ao carregar apartamentos: ' + err.message);
+    } finally {
+      setLoading(false);
     }
   };
-  */
 
+  // Carrega apartamentos ao montar o componente
+  useEffect(() => {
+    carregarApartamentos();
+  }, []);
 
+  // Função para adicionar apartamento
+  const adicionarApartamento = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/apartamentos/apartamento`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(apartamentoForm)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao adicionar apartamento');
+      }
+
+      const novoApartamento = await response.json();
+      setApartamentos([...apartamentos, novoApartamento]);
+      
+      // Limpa o formulário
+      setApartamentoForm({
+        Numero_AP: '',
+        Ocupado: false,
+        Alugado: false,
+        Venda: false
+      });
+      
+      alert('Apartamento adicionado com sucesso!');
+    } catch (err) {
+      setError('Erro ao adicionar apartamento: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para atualizar apartamento
+  const atualizarApartamento = async (numeroAP, dadosAtualizados) => {
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/apartamentos/apartamento/${numeroAP}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dadosAtualizados)
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao atualizar apartamento');
+      }
+
+      // Recarrega a lista de apartamentos
+      await carregarApartamentos();
+      alert('Apartamento atualizado com sucesso!');
+    } catch (err) {
+      setError('Erro ao atualizar apartamento: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para remover apartamento (se você tiver endpoint de DELETE)
+  const removerApartamento = async (numeroAP) => {
+    if (!confirm('Tem certeza que deseja remover este apartamento?')) {
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/apartamentos/apartamento/${numeroAP}`, {
+        method: 'DELETE'
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao remover apartamento');
+      }
+
+      setApartamentos(apartamentos.filter(apt => apt.Numero_AP !== numeroAP));
+      alert('Apartamento removido com sucesso!');
+    } catch (err) {
+      setError('Erro ao remover apartamento: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para lidar com mudanças no formulário
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProdutoForm(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setApartamentoForm(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
   };
 
-
-  const removerProduto = (id) => {
-    setProdutos(produtos.filter(produto => produto.id !== id));
-  };
-
-
-  // Função para formatar o nome da categoria
-  const formatarCategoria = (categoria) => {
-    const categorias = {
-      'eletronicos': 'Eletrônicos',
-      'informatica': 'Informática',
-      'moveis': 'Móveis',
-      'vestuario': 'Vestuário',
-      'outros': 'Outros'
+  // Função para alternar status do apartamento
+  const alternarStatus = async (apartamento, campo) => {
+    const dadosAtualizados = {
+      Ocupado: apartamento.Ocupado,
+      Alugado: apartamento.Alugado,
+      Venda: apartamento.Venda,
+      [campo]: !apartamento[campo]
     };
-    return categorias[categoria] || categoria;
+    
+    await atualizarApartamento(apartamento.Numero_AP, dadosAtualizados);
   };
-
 
   return (
     <div className="servicos-container">
-      {/* <h2>Cadastro de Produtos</h2> */}
+      <h2>Gerenciamento de Apartamentos</h2>
       
-      {/* Formulário de criação comentado para desabilitar criação */}
-      {/*
-      <form onSubmit={handleSubmit} className="produto-form">
+      {error && (
+        <div className="error-message" style={{color: 'red', padding: '10px', margin: '10px 0'}}>
+          {error}
+        </div>
+      )}
+
+      {/* Formulário para adicionar apartamento */}
+      <form onSubmit={adicionarApartamento} className="produto-form">
         <div className="form-grid">
           <div className="form-group">
-            <label>Nome do Produto</label>
+            <label>Número do Apartamento</label>
             <input
               type="text"
-              name="nome"
-              value={produtoForm.nome}
+              name="Numero_AP"
+              value={apartamentoForm.Numero_AP}
               onChange={handleChange}
-              placeholder="Ex: Notebook Gamer"
+              placeholder="Ex: 101"
               required
             />
-          </div>
-
-          <div className="form-group">
-            <label>Preço (R$)</label>
-            <input
-              type="number"
-              name="preco"
-              value={produtoForm.preco}
-              onChange={handleChange}
-              placeholder="0.00"
-              step="0.01"
-              min="0"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Categoria</label>
-            <select
-              name="categoria"
-              value={produtoForm.categoria}
-              onChange={handleChange}
-              required
-            >
-              <option value="">Selecione uma categoria</option>
-              <option value="eletronicos">Eletrônicos</option>
-              <option value="informatica">Informática</option>
-              <option value="moveis">Móveis</option>
-              <option value="vestuario">Vestuário</option>
-              <option value="outros">Outros</option>
-            </select>
           </div>
         </div>
 
         <div className="descricoes-grid">
           <div className="form-group">
-            <label>Descrição 1 (Característica Principal)</label>
-            <textarea
-              name="descricao1"
-              value={produtoForm.descricao1}
-              onChange={handleChange}
-              placeholder="Ex: Processador Intel i7, 16GB RAM"
-              rows="3"
-            />
+            <label>
+              <input
+                type="checkbox"
+                name="Ocupado"
+                checked={apartamentoForm.Ocupado}
+                onChange={handleChange}
+              />
+              Ocupado
+            </label>
           </div>
 
           <div className="form-group">
-            <label>Descrição 2 (Especificações Técnicas)</label>
-            <textarea
-              name="descricao2"
-              value={produtoForm.descricao2}
-              onChange={handleChange}
-              placeholder="Ex: SSD 512GB, Placa de Vídeo RTX 3060"
-              rows="3"
-            />
+            <label>
+              <input
+                type="checkbox"
+                name="Alugado"
+                checked={apartamentoForm.Alugado}
+                onChange={handleChange}
+              />
+              Alugado
+            </label>
           </div>
 
           <div className="form-group">
-            <label>Descrição 3 (Informações Adicionais)</label>
-            <textarea
-              name="descricao3"
-              value={produtoForm.descricao3}
-              onChange={handleChange}
-              placeholder="Ex: Garantia de 12 meses, Windows 11 incluído"
-              rows="3"
-            />
+            <label>
+              <input
+                type="checkbox"
+                name="Venda"
+                checked={apartamentoForm.Venda}
+                onChange={handleChange}
+              />
+              À Venda
+            </label>
           </div>
         </div>
 
-        <button type="submit" className="add-produto-btn">
-          ➕ Adicionar Produto
+        <button type="submit" className="add-produto-btn" disabled={loading}>
+          {loading ? '⏳ Adicionando...' : '➕ Adicionar Apartamento'}
         </button>
       </form>
-      */}
 
+      {/* Lista de apartamentos */}
       <div className="produtos-list">
-        <h3>Produtos Cadastrados ({produtos.length})</h3>
+        <h3>Apartamentos Cadastrados ({apartamentos.length})</h3>
         
-        {produtos.length === 0 ? (
-          <p className="empty-message">Nenhum produto cadastrado ainda.</p>
+        {loading && !error && (
+          <p className="loading-message">⏳ Carregando apartamentos...</p>
+        )}
+        
+        {apartamentos.length === 0 && !loading ? (
+          <p className="empty-message">Nenhum apartamento cadastrado ainda.</p>
         ) : (
           <div className="produtos-grid">
-            {produtos.map(produto => (
-              <div key={produto.id} className="produto-card">
+            {apartamentos.map(apartamento => (
+              <div key={apartamento.Numero_AP} className="produto-card">
                 <div className="produto-header">
-                  <h4>{produto.nome}</h4>
-                  <span className="categoria-badge">
-                    {formatarCategoria(produto.categoria)}
-                  </span>
-                </div>
-                
-                <div className="produto-preco">
-                  R$ {produto.preco.toFixed(2)}
+                  <h4>Apartamento {apartamento.Numero_AP}</h4>
                 </div>
 
                 <div className="produto-descricoes">
-                  {produto.descricao1 && (
-                    <p><strong>Principal:</strong> {produto.descricao1}</p>
-                  )}
-                  {produto.descricao2 && (
-                    <p><strong>Especificações:</strong> {produto.descricao2}</p>
-                  )}
-                  {produto.descricao3 && (
-                    <p><strong>Adicional:</strong> {produto.descricao3}</p>
-                  )}
+                  <div style={{display: 'flex', gap: '15px', flexWrap: 'wrap', margin: '10px 0'}}>
+                    <label style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                      <input
+                        type="checkbox"
+                        checked={apartamento.Ocupado}
+                        onChange={() => alternarStatus(apartamento, 'Ocupado')}
+                        disabled={loading}
+                      />
+                      <span style={{color: apartamento.Ocupado ? 'red' : 'green'}}>
+                        {apartamento.Ocupado ? '🔴 Ocupado' : '🟢 Disponível'}
+                      </span>
+                    </label>
+
+                    <label style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                      <input
+                        type="checkbox"
+                        checked={apartamento.Alugado}
+                        onChange={() => alternarStatus(apartamento, 'Alugado')}
+                        disabled={loading}
+                      />
+                      <span style={{color: apartamento.Alugado ? 'blue' : 'gray'}}>
+                        {apartamento.Alugado ? '🏠 Alugado' : '🏠 Não Alugado'}
+                      </span>
+                    </label>
+
+                    <label style={{display: 'flex', alignItems: 'center', gap: '5px'}}>
+                      <input
+                        type="checkbox"
+                        checked={apartamento.Venda}
+                        onChange={() => alternarStatus(apartamento, 'Venda')}
+                        disabled={loading}
+                      />
+                      <span style={{color: apartamento.Venda ? 'orange' : 'gray'}}>
+                        {apartamento.Venda ? '💰 À Venda' : '💰 Não à Venda'}
+                      </span>
+                    </label>
+                  </div>
                 </div>
 
-                <button 
-                  onClick={() => removerProduto(produto.id)}
-                  className="remove-produto-btn"
-                >
-                  🗑️ Remover
-                </button>
+                <div style={{display: 'flex', gap: '10px', marginTop: '15px'}}>
+                  <button 
+                    onClick={() => removerApartamento(apartamento.Numero_AP)}
+                    className="remove-produto-btn"
+                    disabled={loading}
+                    style={{flex: 1}}
+                  >
+                    🗑️ Remover
+                  </button>
+                  
+                  <button 
+                    onClick={() => carregarApartamentos()}
+                    disabled={loading}
+                    style={{
+                      padding: '8px 15px',
+                      backgroundColor: '#007bff',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '5px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    🔄 Atualizar
+                  </button>
+                </div>
               </div>
             ))}
           </div>

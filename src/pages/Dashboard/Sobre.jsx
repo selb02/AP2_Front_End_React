@@ -15,7 +15,7 @@ function Sobre() {
           <div className="timeline-marker"></div>
           <div className="timeline-content">
             <h3>2020 - Fundação</h3>
-            <p>Nossa empresa foi fundada com o objetivo de fornecer soluções inovadoras e revolucionar o mercado com tecnologia de ponta.</p>
+            <p>Nossa empresa foi fundada em 2020 para criar serviços de gerenciamento de condominíos.</p>
           </div>
         </div>
         
@@ -23,7 +23,7 @@ function Sobre() {
           <div className="timeline-marker"></div>
           <div className="timeline-content">
             <h3>2021 - Expansão</h3>
-            <p>Crescimento da equipe e desenvolvimento de nossa primeira suite completa de produtos para atender diferentes segmentos.</p>
+            <p>Crescimento da equipe e desenvolvimento de nossa primeira suite completa de produtos para atender diferentes condominios.</p>
           </div>
         </div>
         
@@ -31,7 +31,7 @@ function Sobre() {
           <div className="timeline-marker"></div>
           <div className="timeline-content">
             <h3>2023 - Inovação</h3>
-            <p>Lançamento de tecnologias disruptivas e parcerias estratégicas que nos posicionaram como líderes do setor.</p>
+            <p>Expansão da nossa rede de condominios assim atualizando nosso site e poder computacional.</p>
           </div>
         </div>
         

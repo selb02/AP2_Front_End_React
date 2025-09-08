@@ -45,14 +45,7 @@ function HomePage() {
         </div>
       </div>
 
-      <div className="cta-section">
-        <h3>Pronto para começar?</h3>
-        <p>Explore as funcionalidades disponíveis através do menu de navegação.</p>
-        <div className="cta-buttons">
-          <button className="cta-primary">Começar Agora</button>
-          <button className="cta-secondary">Saiba Mais</button>
-        </div>
-      </div>
+      
     </div>
   );
 }
