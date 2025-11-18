@@ -1,124 +1,107 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Ativo-success?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Front--End-React-blue?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/Build-Vite-orange?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/License-Open%20Source-lightgrey?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Projeto-Acadêmico-purple?style=for-the-badge"/>
 </p>
 
 ---
 
-# 🏢 **Projeto – Sistema Condominio**
+# 🏢 **Sistema de Ocupação de Apartamentos — Frontend**
 
-Aplicação **frontend em React + Vite** desenvolvida para administrar e visualizar a **ocupação de apartamentos em um condomínio**, fazendo consumo de uma API externa que centraliza dados de unidades, moradores e reservas.
-
-O foco do sistema é **simplicidade, visão rápida do status das unidades, usabilidade e integração real com o backend**.
+Aplicação web desenvolvida em **React + Vite** para gerenciamento de ocupação de apartamentos em um condomínio, permitindo interação com uma **API REST** para visualizar, consultar e registrar informações sobre unidades, moradores e status de ocupação.
 
 ---
 
-## 🚀 **Objetivo do Projeto**
+## 🎯 **Propósito da Aplicação**
 
-- Centralizar informações sobre ocupação de apartamentos
-- Garantir clareza e transparência entre administração e moradores
-- Prover uma interface moderna, responsiva e intuitiva
-- Consumir uma API real com listagem, filtros e interações
+O projeto tem como objetivo **centralizar e facilitar a consulta de ocupação de apartamentos em um condomínio**, garantindo clareza e organização para administração e moradores.
 
----
-
-## 🎯 **Público-Alvo**
-
-| Persona | Perfil | Ações no Sistema |
-|---------|---------|------------------|
-| **Síndico** | Gestor do condomínio | Consultar, administrar ocupação e relatórios |
-| **Equipe de portaria** | Operacional | Registrar ocupações e visualização rápida |
-| **Moradores** | Usuários finais | Consulta de informações e solicitações |
+De forma simples, prática e visual, o sistema possibilita que os usuários consultem rapidamente o status de cada apartamento e realizem interações definidas pela API, evitando conflitos e promovendo gestão eficiente.
 
 ---
 
-## ⚙️ **Tecnologias Utilizadas**
+## 💡 **Ideia Geral do Projeto**
 
-| Camada | Tecnologia | Justificativa |
-|--------|------------|---------------|
-| **Frontend** | React (Vite) | Performance, modularidade e DX moderno |
-| **Linguagem** | JavaScript (ES6+) | Padrão de mercado |
-| **Rotas / Navegação** | React Router (se usado) | SPA fluida e organizada |
-| **Estilização** | CSS (ou framework utilizado) | UI personalizada |
-| **Comunicação com API** | Fetch / Axios | Facilidade e organização nas requisições |
+A ideia nasce da necessidade operacional de condomínios que carecem de um sistema digital simples e eficiente para acompanhar a ocupação dos apartamentos.
 
----
+A aplicação:
 
-## 📁 **Estrutura de Pastas (Resumo)**
-
-AP2_Front_End_React/
-├─ public/
-│ └─ index.html
-├─ src/
-│ ├─ components/ # Componentes reutilizáveis
-│ ├─ pages/ # Páginas principais do app
-│ ├─ services/ # Integração com API, métodos de request
-│ ├─ styles/ # Estilos e temas
-│ ├─ App.jsx # Container principal do React
-│ └─ main.jsx # Entry point do Vite + React
-├─ .gitignore
-├─ package.json
-├─ vite.config.js
-└─ README.md
-
-yaml
-Copiar código
+- Mostra quais unidades estão ocupadas ou disponíveis
+- Realiza comunicação com backend real
+- Fornece uma interface amigável, responsiva e moderna
+- Facilita tomadas de decisão, evitando desencontro de informações
 
 ---
 
-## 🏗️ **Como Rodar o Projeto Localmente**
+## 👥 **A quem se destina**
 
-### 🔧 **Requisitos**
-
-| Dependência | Versão Recomendada |
-|-------------|-------------------|
-| Node.js | 18+ |
-| npm ou yarn | mais recente |
-| Backend ativo | URL da API acessível |
+| Usuário | Perfil | Permissões e Benefícios |
+|---------|---------|-------------------------|
+| Síndico | Gestor do condomínio | Acompanhamento total e validação de registros |
+| Equipe administrativa | Operacional e controle | Acesso rápido para registros e visualização |
+| Moradores | Usuários do sistema | Consulta facilitada e transparência |
 
 ---
 
-### ▶️ **Passo a Passo**
+## 📌 **O que se pretende fazer a partir do projeto**
 
-1️⃣ Clone o repositório  
+- Melhorar a comunicação interna sobre ocupações
+- Transformar planilhas e processos manuais em automação
+- Criar base para futuros módulos como:  
+  ✔ reservas de áreas comuns  
+  ✔ sistema de manutenção  
+  ✔ notificações internas  
+  ✔ módulo mobile  
+
+---
+
+## 🧰 **Stack & Tecnologias Utilizadas**
+
+| Item | Tecnologia | Finalidade |
+|------|------------|------------|
+| Linguagem | JavaScript (ES6+) | Base do desenvolvimento |
+| Framework SPA | React | Construção da interface e componentes |
+| Bundler | Vite | Build rápido, leve e moderno |
+| Comunicação com API | Fetch ou Axios | Integração com backend |
+| Gerenciamento | npm ou yarn | Dependências e scripts |
+| Controle de versão | Git + GitHub | Versionamento e colaboração |
+
+---
+
+## 🔌 Integração com API
+
+A aplicação não utiliza dados mockados; ela **consome endpoints reais do backend**, utilizando variáveis de ambiente para configurar a URL base.
+
+Exemplo básico de requisição:
+
+```js
+const response = await fetch(`${import.meta.env.VITE_API_URL}/apartamentos`);
+const data = await response.json();
+Observação: é necessário que o backend esteja rodando e acessível para funcionamento completo.
+
+🖥️ Como rodar o projeto localmente
+1️⃣ Clonar repositório
 git clone https://github.com/selb02/AP2_Front_End_React.git
 cd AP2_Front_End_React
-2️⃣ Instale as dependências
+2️⃣ Instalar dependências
 
-
-Copiar código
 npm install
 # ou
 yarn
-3️⃣ Crie um arquivo .env na raiz do projeto
+3️⃣ Configurar variáveis de ambiente
+Crie um arquivo .env na raiz e insira:
 
-bash
-Copiar código
+
 VITE_API_URL=http://localhost:8000/api
-4️⃣ Execute o projeto
+Ajuste conforme a URL real do backend
 
-bash
-Copiar código
+4️⃣ Executar o servidor de desenvolvimento
+
 npm run dev
 # ou
 yarn dev
-5️⃣ Acesse no navegador
-👉 http://localhost:5173
-
-🔗 Integração com API
-A aplicação consome dados da API através de serviços centralizados, garantindo melhor organização e facilidade de manutenção.
-
-Exemplo de requisição (modelo simplificado):
-
-js
+5️⃣ Acessar aplicação
+arduino
 Copiar código
-const response = await fetch(`${import.meta.env.VITE_API_URL}/apartamentos`);
-const data = await response.json();
-🧪 Testes (se aplicável)
-Caso implementem testes futuramente, recomenda-se:
-
-React Testing Library
-
-Vitest ou Jest
+http://localhost:5173
