@@ -18,6 +18,7 @@ function Dashboard() {
         <Link to="/dashboard/moradores" className="nav-link">Moradores</Link>
         <Link to="/dashboard/apartamentos" className="nav-link">Apartamentos</Link>
         <Link to="/dashboard/contas" className="nav-link">Contas</Link>
+        <Link to="/dashboard/funcionarios" className="nav-link">Funcionários</Link>
       </nav>
 
       <main className="dashboard-content">

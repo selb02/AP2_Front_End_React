@@ -8,6 +8,7 @@ import Sobre from './pages/Dashboard/Sobre';
 import Moradores from './pages/Dashboard/Moradores';
 import Apartamentos from './pages/Dashboard/Apartamentos';
 import Contas from './pages/Dashboard/Contas';
+import Funcionarios from './pages/Dashboard/Funcionarios';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="moradores" element={<Moradores />} />
             <Route path="apartamentos" element={<Apartamentos />} />
             <Route path="contas" element={<Contas />} />
+            <Route path="funcionarios" element={<Funcionarios />} />
           </Route>
           
           <Route path="/" element={<Navigate to="/dashboard" />} />
